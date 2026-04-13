@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>待办清单</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-pattern" aria-hidden="true"></div>
+    <div class="app-layout">
+      <main class="shell">
+      <header class="header">
+        <h1 class="title">待办清单</h1>
+        <p class="subtitle">记下要做的事，专注当下</p>
+      </header>
+
+      <form class="composer" id="form-add" autocomplete="off">
+        <label class="sr-only" for="input-todo">新任务</label>
+        <div class="composer-grid">
+          <input
+            id="input-todo"
+            class="input"
+            type="text"
+            maxlength="500"
+            placeholder="添加新任务，按 Enter 保存…"
+          />
+          <label class="date-field date-field-shell" id="label-due-wrap" title="可选：点击打开日历选择截止日期">
+            <span class="sr-only">选择截止日期（可选）</span>
+            <span class="date-field-fake" aria-hidden="true">截止日期</span>
+            <input id="input-due" class="input input-date" type="date" lang="zh-CN" />
+          </label>
+          <button type="submit" class="btn btn-primary">添加</button>
+        </div>
+      </form>
+
+      <div class="toolbar">
+        <div class="filters" role="tablist" aria-label="筛选">
+          <button type="button" class="filter is-active" data-filter="all" role="tab" aria-selected="true">
+            全部
+          </button>
+          <button type="button" class="filter" data-filter="active" role="tab" aria-selected="false">
+            未完成
+          </button>
+          <button type="button" class="filter" data-filter="completed" role="tab" aria-selected="false">
+            已完成
+          </button>
+        </div>
+        <button type="button" class="btn btn-ghost" id="btn-clear-done" hidden>
+          清除已完成
+        </button>
+      </div>
+
+      <ul class="list" id="list" aria-live="polite"></ul>
+
+      <footer class="footer" id="footer-stats"></footer>
+      </main>
+
+      <aside class="ai-sidebar" aria-labelledby="ai-sidebar-title">
+        <h2 class="ai-sidebar-title" id="ai-sidebar-title">AI 总结</h2>
+        <p class="ai-sidebar-hint">
+          根据当前待办列表生成简要总结。接入真实模型时，请在
+          <code class="ai-code">ai-api.js</code>
+          中配置 <code class="ai-code">TodoAppAiApi.config.endpoint</code>。
+        </p>
+        <button type="button" class="btn btn-primary btn-ai" id="btn-ai-summary">
+          生成总结
+        </button>
+        <div class="ai-summary-box" id="ai-summary-output" role="status" aria-live="polite"></div>
+      </aside>
+    </div>
+
+    <script src="ai-api.js" defer></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>

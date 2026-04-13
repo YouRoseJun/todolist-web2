@@ -1,0 +1,129 @@
+================================================================================
+  使用 GitHub Desktop 推送待办网站并启用自动部署（GitHub Pages + Actions）
+  说明：以下为完整步骤文档，你可按顺序独立完成，无需他人逐步追问。
+================================================================================
+
+一、准备工作
+--------------------------------------------------------------------------------
+1. 安装 GitHub Desktop
+   - 打开：https://desktop.github.com/
+   - 下载 Windows 版并安装，安装完成后启动一次。
+
+2. 登录 GitHub 账号
+   - 打开 GitHub Desktop → File → Options（或 Ctrl+,）→ Accounts
+   - 点击 Sign in → 浏览器中完成 GitHub 登录并授权 Desktop。
+
+3. 确认你的网站文件位置
+   - 本项目的网站文件应在同一文件夹内，且根目录能看到：
+     index.html、styles.css、app.js、ai-api.js
+     以及文件夹 .github\workflows\（内含 deploy-github-pages.yml）
+   - 推荐路径示例：d:\data\todolist-web
+   - 若你发现「文件夹里又套了一个同名子文件夹」，请使用**直接包含 index.html 的那一层**作为仓库根目录，避免把整站推错层级。
+
+
+二、方式 A：本地已有文件夹，首次用 Desktop 建库并推送到 GitHub（最常用）
+--------------------------------------------------------------------------------
+1. 在 GitHub 网页新建空仓库（建议先做这一步）
+   - 打开：https://github.com/new
+   - Repository name：例如 todolist-web（可自定）
+   - 选 Public（公开仓库，GitHub Pages 免费托管常用）
+   - 不要勾选 Add a README / .gitignore / license（保持仓库为空）
+   - 点 Create repository
+   - 记下页面上的仓库地址，例如：
+     https://github.com/你的用户名/todolist-web.git
+
+2. 在 GitHub Desktop 添加本地仓库
+   - File → Add Local Repository
+   - Local path 选：d:\data\todolist-web（或你的实际路径）
+   - 若提示「This directory does not appear to be a git repository」：
+     → 点「create a repository」或先在该文件夹用 Desktop 初始化（见下方「若需新建本地仓库」）
+
+3. 若需新建本地仓库（仅当该文件夹还不是 git 仓库时）
+   - File → New Repository
+   - Local path：选到 d:\data\todolist-web（父文件夹名不要选错）
+   - Name：可与 GitHub 仓库名一致，例如 todolist-web
+   - Git ignore：可选 Node（本项目无 Node 也可选 None）
+   - License：None
+   - 点 Create Repository
+   - 此时左栏应能看到你的文件变更；若已有文件，一般会出现「Initial commit」相关提示。
+
+4. 首次提交（Commit）
+   - 左栏勾选要提交的文件（首次建议全选：index.html、styles.css、app.js、ai-api.js、.gitignore、.github 下全部）
+   - 下方 Summary 填写：例如 Initial site
+   - 点「Commit to main」（分支名应为 main；若是 master，可在 Repository → Repository Settings → Default branch 改为 main，与 GitHub 习惯一致）
+
+5. 关联远程并推送（Publish / Push）
+   - 若尚未关联远程：Repository → Repository Settings → Remote → Primary remote repository
+     填入：https://github.com/你的用户名/仓库名.git
+   - 或使用菜单：Repository → Push（若提示 Publish repository）
+   - 第一次会弹出「Publish repository」：
+     - Name：与网页上建的仓库名一致
+     - 取消勾选「Keep this code private」若你要公开站点（或按需勾选私有）
+     - 点 Publish repository
+   - 若网页上已建好空仓库：也可在 Desktop 里 Repository → Repository Settings → Remote 添加 origin 为上述 HTTPS 地址，然后菜单栏 Repository → Push origin。
+
+6. 推送成功后
+   - 打开浏览器访问你的 GitHub 仓库页面，应能看到文件列表与最近一次提交。
+
+
+三、方式 B：在 Desktop 里「从 GitHub 克隆」再拷贝文件（适合先占仓库名）
+--------------------------------------------------------------------------------
+1. File → Clone repository → 选你的空仓库 → 本地路径选例如 d:\data\repos\todolist-web
+2. 把你的 index.html、styles.css 等**复制进克隆下来的文件夹**，覆盖或新增。
+3. Desktop 会显示变更 → 填写 Summary → Commit → Push。
+
+
+四、启用 GitHub Pages（与仓库内已有 workflow 配套）
+--------------------------------------------------------------------------------
+本仓库已包含：.github/workflows/deploy-github-pages.yml
+推送至 main 后，需把 Pages 的发布方式设为「GitHub Actions」。
+
+1. 打开仓库网页 → Settings → 左侧 Pages
+2. Build and deployment 区域：
+   - Source（来源）选：GitHub Actions（不要选 Deploy from a branch，除非你不用 Actions）
+3. 若第一次使用 Pages，按页面提示保存即可。
+4. 打开仓库 → Actions 标签页，应能看到「Deploy to GitHub Pages」工作流在运行；等待绿色勾（约 1～3 分钟）。
+5. 再回到 Settings → Pages，页面会显示站点地址，一般为：
+   https://你的用户名.github.io/仓库名/
+
+
+五、以后修改代码如何更新线上
+--------------------------------------------------------------------------------
+1. 在本地改好 d:\data\todolist-web 里的文件并保存。
+2. 打开 GitHub Desktop，左侧会列出变更。
+3. 勾选要提交的文件，填写 Summary（例如：fix styles），点 Commit to main。
+4. 点窗口上方「Push origin」或菜单 Repository → Push。
+5. 等待 Actions 跑完，刷新你的 GitHub Pages 网址即可看到更新（有时需等几十秒或强刷 Ctrl+F5）。
+
+
+六、常见问题
+--------------------------------------------------------------------------------
+Q1：Push 被拒绝（rejected / non-fast-forward）
+   - 可能远程有你本地没有的提交。在 Desktop：Repository → Pull origin，合并后再 Push。
+   - 若你确定要用本地覆盖远程（慎用）：需用命令行 force push，Desktop 一般不推荐新手强推。
+
+Q2：Authentication failed
+   - Options → Accounts 重新登录 GitHub；或检查是否开启了两步验证，按 GitHub 提示使用浏览器授权。
+
+Q3：Actions 失败（红色）
+   - 打开 Actions → 点失败的那次运行 → 查看报错日志。
+   - 确认 Settings → Pages 的 Source 是 GitHub Actions；确认默认分支是 main 且 workflow 里写的是 push 到 main。
+
+Q4：网页 404
+   - 等几分钟；确认 Actions 已成功；确认访问的 URL 与 Settings → Pages 显示一致；仓库为 Public 且 Pages 已启用。
+
+Q5：只想推送，不想部署 Pages
+   - 可忽略第四部分；或删除 .github/workflows 下 yml 文件后再提交（将失去自动部署）。
+
+
+七、核对清单（推送前自查）
+--------------------------------------------------------------------------------
+□ 本地文件夹根目录有 index.html
+□ 已 Commit 且分支为 main（或与远程一致）
+□ 已与 GitHub 远程仓库关联并成功 Push 至少一次
+□ Settings → Pages → Source 已选 GitHub Actions（若要用自动部署）
+□ Actions 中 Deploy to GitHub Pages 已成功运行
+
+================================================================================
+文档结束。路径与仓库名请一律替换为你自己的。
+================================================================================
