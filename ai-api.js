@@ -13,13 +13,14 @@
   "use strict";
 
   /**
-   * endpoint 可直接写死，也可在 index.html 里先设置：
+   * 默认使用线上后端，也可在 index.html 里覆盖：
    * window.TODO_AI_API_ENDPOINT = "http://localhost:3000/api/ai-summary";
    */
   /** @type {{ endpoint: string }} */
   const config = {
     endpoint:
-      (typeof global.TODO_AI_API_ENDPOINT === "string" ? global.TODO_AI_API_ENDPOINT : "").trim() || "",
+      (typeof global.TODO_AI_API_ENDPOINT === "string" ? global.TODO_AI_API_ENDPOINT : "").trim() ||
+      "https://todolist-web2.onrender.com/api/ai-summary",
   };
 
   /**
