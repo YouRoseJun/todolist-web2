@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: todolist-ai-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    plan: free
+    envVars:
+      - key: AI_BASE_URL
+        value: https://api.openai.com/v1
+      - key: AI_MODEL
+        value: gpt-4o-mini
+      - key: AI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://yourosejun.github.io

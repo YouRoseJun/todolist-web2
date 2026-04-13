@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>待办清单</title>
+    <meta
+      name="description"
+      content="简洁易用的待办清单应用，支持任务新增、完成状态管理、筛选和 AI 总结。"
+    />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -76,6 +81,9 @@
       </aside>
     </div>
 
+    <script>
+      window.TODO_AI_API_ENDPOINT = "https://todolist-web2.onrender.com/api/ai-summary";
+    </script>
     <script src="ai-api.js" defer></script>
     <script src="app.js" defer></script>
   </body>

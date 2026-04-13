@@ -12,9 +12,14 @@
 (function (global) {
   "use strict";
 
+  /**
+   * endpoint 可直接写死，也可在 index.html 里先设置：
+   * window.TODO_AI_API_ENDPOINT = "http://localhost:3000/api/ai-summary";
+   */
   /** @type {{ endpoint: string }} */
   const config = {
-    endpoint: "",
+    endpoint:
+      (typeof global.TODO_AI_API_ENDPOINT === "string" ? global.TODO_AI_API_ENDPOINT : "").trim() || "",
   };
 
   /**
